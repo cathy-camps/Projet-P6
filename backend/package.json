@@ -1,0 +1,29 @@
+{
+  "name": "p6-piiquante-openclassrooms",
+  "version": "1.0.0",
+  "description": "création d'une api sécurisée pour une application d'évaluation",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cathy-camps/P6-Piiquante-OpenClassrooms.git"
+  },
+  "keywords": [
+    "cathycamps"
+  ],
+  "author": "Catherine Lavallé",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cathy-camps/P6-Piiquante-OpenClassrooms/issues"
+  },
+  "homepage": "https://github.com/cathy-camps/P6-Piiquante-OpenClassrooms#readme",
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.0",
+    "mongoose": "^6.8.3",
+    "mongoose-unique-validator": "^3.1.0"
+  }
+}
