@@ -6,8 +6,7 @@ const config = require('./config');
 const mongoose = require ('mongoose');
 const cors = require('cors');
 
-const User = require('./models/User');
-console.log(User);
+const userRoutes = require('./routes/user');
 
 mongoose.set('strictQuery', true);
 //se connecter à notre base de données MongoDB
@@ -38,46 +37,8 @@ app.use((req, res, next) => {
 app.use(bodyParser.json());
 app.use(cors());
 
-//Avec ceci, Express prend toutes les requêtes qui ont comme Content-Type  application/json  et met à disposition leur  body  directement sur l'objet req, ce qui nous permet d'écrire le middleware POST suivant :
-app.post('/api_piiquante/users', (req, res, next) => {
-    //supprime l'id généré automatiquement
-    delete req.body._id;
-    const user = new User({
-        ...req.body
-    });
-    //enregistrer un utilisateur dans la base de données
-    thing.save()
-    .then(() => res.status(201).json({message: 'Utilisateur enregistré !'})) //renvoit une réponse au front-end (sinon la requête va expirer)
-    .catch(error => res.status(400).json({ error }));
-});
+app.use('/api_piiquante/users', userRoutes);
 
-//récupération d'un utilisateur spécifique par son id (le frontend va envoyer l'id de l'utilisateur)
-app.get('/api_piiquante/users/:id', (req, res, next) => {
-    User.findOne({ _id: req.params.id })
-        .then(user => res.status(200).json(user))
-        .catch(error => res.status(404).json({ error }));
-});
-
-//implémenter la route get pour récupérer la liste complète des utilisateurs enregistrés dans la base de données
-app.get('/api_piiquante/users', (req, res, next) => {
-    User.find()
-    .then(users => res.status(200).json(users))
-    .catch(error => res.status(400).json({error}))
-    });
- 
-//implémenter une route put pour la modification d'un utilisateur existant
-app.put('/api_piiquante/users/:id', (req, res, next) => {
-    User.updateOne({ _id: req.params.id }, { ...req.body, _id: req.params.id })
-        .then(() => res.status(200).json({ message: 'Utilisateur modifié !' }))
-        .catch(error => res.status(400).json({ error }));
-});
-
-//implémenter une route pour supprimer un utilisateur 
-app.delete('/api_piiquante/users/:id', (req, res, next) => {
-    User.deleteOne({ _id: req.params.id })
-        .then(() => res.status(200).json({ message: 'Utilisateur supprimé !' }))
-        .catch(error => res.status(400).json({ error }));
-});
 /*
 const mongoose = require('mongoose');
 const User = require('./models/User');
