@@ -6,7 +6,7 @@ const config = require('./config');
 const mongoose = require ('mongoose');
 const cors = require('cors');
 
-const userRoutes = require('./routes/user');
+const userRoutes = require('../routes/user');
 
 mongoose.set('strictQuery', true);
 //se connecter à notre base de données MongoDB
@@ -37,10 +37,9 @@ app.use((req, res, next) => {
 app.use(bodyParser.json());
 app.use(cors());
 
-app.use('/api_piiquante/users', userRoutes);
+app.use('/api_piiquante_users', userRoutes);
 
 /*
-const mongoose = require('mongoose');
 const User = require('./models/User');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');

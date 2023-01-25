@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const User = require('../models/User');
+const userCtrl = require('../controllers/user');
 console.log(User);
 
 router.post('/', (req, res, next) => {
@@ -11,19 +11,9 @@ router.post('/', (req, res, next) => {
     });
     //enregistrer un utilisateur dans la base de données
     user.save()
-        .then(() => res.status(201).json({ message: 'Utilisateur enregistré !' })) //renvoit une réponse au front-end (sinon la requête va expirer)
+        .then(() => res.status(201).json({ message: 'Utilisateur enregistré avec succès!' })) //renvoit une réponse au front-end (sinon la requête va expirer)
         .catch(error => res.status(400).json({ error }));
 });
-
-/*
-//Avec ceci, Express prend toutes les requêtes qui ont comme Content-Type  application/json  et met à disposition leur  body  directement sur l'objet req, ce qui nous permet d'écrire le middleware POST suivant :
-router.post('/', (req, res, next) => {
-    //supprime l'id généré automatiquement
-    delete req.body._id;
-    const user = new User({
-        ...req.body
-    });
-});*/
 
 //récupération d'un utilisateur spécifique par son id (le frontend va envoyer l'id de l'utilisateur)
 router.get('/:id', (req, res, next) => {
@@ -44,15 +34,12 @@ router.put('/:id', (req, res, next) => {
         .catch(error => res.status(400).json({ error }));
 });
 
-
 //implémenter une route pour supprimer un utilisateur 
 router.delete('/:id', (req, res, next) => {
     User.deleteOne({ _id: req.params.id })
         .then(() => res.status(200).json({ message: 'Utilisateur supprimé !' }))
         .catch(error => res.status(400).json({ error }));
 });
-
-
 
 //implémenter la route get pour récupérer la liste complète des utilisateurs enregistrés dans la base de données
 router.get('/' + '', (req, res, next) => {
