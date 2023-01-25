@@ -7,6 +7,7 @@ const mongoose = require ('mongoose');
 const cors = require('cors');
 
 const sauceRoutes = require('./routes/sauce');
+const userRoutes = require('./routes/user');
 
 mongoose.set('strictQuery', true);
 //se connecter à notre base de données MongoDB
@@ -38,6 +39,7 @@ app.use(bodyParser.json());
 app.use(cors());
 
 app.use('/api_piiquante/sauce', sauceRoutes);
+app.use('/api_piiquante/auth', userRoutes);
 
 /*
 const User = require('./models/User');
