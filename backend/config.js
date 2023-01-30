@@ -1,4 +1,4 @@
-const dotenv = require('dotenv');
+/*const dotenv = require('dotenv');
 
 dotenv.config();
 
@@ -9,4 +9,4 @@ module.exports = {
         databaseName: process.env.MONGO_DATABASE_NAME,
         url: process.env.MONGO_URL,
     }
-}
+}*/

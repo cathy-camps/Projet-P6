@@ -2,42 +2,44 @@ const Sauce = require("../models/Sauce");
 const jwt = require('jsonwebtoken');
 const fs = require('fs')
 
+//créer une nouvelle sauce
 exports.createSauce = (req, res, next) => {
     const sauceObject = JSON.parse(req.body.sauce);
     delete sauceObject._id;
     delete sauceObject._userId;
     const sauce = new Sauce({
         ...sauceObject,
-        userId: req.auth.userId,
+       /* userId: req.auth.userId,
         name: req.body.name,
         manufacturer: req.body.manufacturer,
         description: req.body.description,
         mainPepper: req.body.mainPepper,
         imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
-        heat: req.body.heat,
-        likes: req.body.likes,
-        disLikes: req.body.disLikes,
-        usersLiked: req.body.usersLiked,
+        heat: req.body.heat,*/
+        likes: 0,
+        disLikes: 0,
+        /*usersLiked: req.body.usersLiked,
         usersDisliked: req.body.usersDisliked,
-        price: req.body.price,
+        price: req.body.price,*/
     });
     sauce.save()
-    .then(() => res.status(201).json({message: 'Sauce enregistrée !'}))
+    .then(() => res.status(201).json({message: 'Sauce enregistrée avec succès!'}))
     .catch(error => res.status(400).json({error}));
 }
 
 //récupérer une sauce
 exports.getOneSauce = (req, res, next) => {
-    Sauce.findOne({_id: req.params.id 
-        }).then((sauce) => {
-                res.status(200).json(sauce);
-            }).catch((error) => {
+    Sauce.findOne({_id: req.params.id })
+    .then((sauce) => {
+                res.status(200).json(sauce)})
+                .catch((error) => {
                         res.status(404).json({ 
                             error: error 
                         });
                     });
             };
 
+//modifier une sauce
 exports.modifySauce = (req, res, next) => {
     const sauceObject = req.file ? {
         ...JSON.parse(req.body.sauce),
