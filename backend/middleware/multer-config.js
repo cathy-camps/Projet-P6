@@ -11,7 +11,7 @@ const storage = multer.diskStorage({
     destination: (req, file, callback) => {
         callback(null, 'images');
     },
-    //indique à multer d'utiliser le nom d'origine, de remplacer les espaces par des underscores et d'ajouter un timestamp comme nom de fichier. Elle utilise ensuite la constante  dictionnaire de MIME pour résoudre l'extension de fichier appropriée
+//indique à multer quel nom de fichier utiliser, de remplacer les espaces par des underscores et d'ajouter un timestamp comme nom de fichier. Elle utilise ensuite la constante  dictionnaire de MIME pour résoudre l'extension de fichier appropriée
     filename: (req, file, callback) => {
         const name = file.originalname.split(' ').join('_');
         const extension = MIME_TYPES[file.mimetype];
@@ -20,4 +20,4 @@ const storage = multer.diskStorage({
 });
 
 //Nous exportons ensuite l'élément multer entièrement configuré, lui passons notre constante storage et lui indiquons que nous gérerons uniquement les téléchargements de fichiers image.
-module.exports = multer({ storage: storage }).single('image');
+module.exports = multer({ storage }).single('image');

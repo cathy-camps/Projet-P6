@@ -8,19 +8,11 @@ exports.createSauce = (req, res, next) => {
     delete sauceObject._id;
     delete sauceObject._userId;
     const sauce = new Sauce({
-        ...sauceObject,
-       /* userId: req.auth.userId,
-        name: req.body.name,
-        manufacturer: req.body.manufacturer,
-        description: req.body.description,
-        mainPepper: req.body.mainPepper,
+        ...sauceObject, //copie tous les éléments de sauceObject
+       //userId: req.auth.userId,
         imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
-        heat: req.body.heat,*/
         likes: 0,
         disLikes: 0,
-        /*usersLiked: req.body.usersLiked,
-        usersDisliked: req.body.usersDisliked,
-        price: req.body.price,*/
     });
     sauce.save()
     .then(() => res.status(201).json({message: 'Sauce enregistrée avec succès!'}))

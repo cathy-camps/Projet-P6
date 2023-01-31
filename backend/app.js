@@ -1,8 +1,9 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const bodyParser =  require ('body-parser');
 const path = require('path');
 const helmet = require('helmet')
+const sauceRoutes = require('./routes/sauces');
+const userRoutes = require('./routes/user');
 const cors = require('cors');
 const dotenv = require('dotenv')
 dotenv.config();
@@ -10,9 +11,6 @@ dotenv.config();
 const app = express();
 
 //console.log(process.env.MONGO_URL)
-
-const sauceRoutes = require('./routes/sauce');
-const userRoutes = require('./routes/user');
 
 mongoose.set('strictQuery', true);
 //se connecter à notre base de données MongoDB
@@ -33,9 +31,8 @@ app.use((req, res, next) => {
 });
 
 app
-.use(express.json())
+.use(express.json()) //remplace bodyParser
 .use(express.urlencoded({ extended: true}))
-.use(bodyParser.json())
 .use(cors())
 .use(helmet({crossOriginResourcePolicy: false}));
 
@@ -43,7 +40,7 @@ app
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
 //enregistrer les routes sauce et utilisateur 
-app.use('/api/sauce', sauceRoutes);
+app.use('/api/sauces', sauceRoutes);
 app.use('/api/auth', userRoutes);
 
 module.exports = app;

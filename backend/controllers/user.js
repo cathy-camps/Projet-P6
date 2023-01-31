@@ -8,7 +8,7 @@ const User = require('../models/User');
 const app = require('../app');
 
 //crypter le mot de passe, créer un nouvel utilisateur avec ce mot de passe créé et l'adresse mail, puis enregistrer l'utilisateur dans la base de données
-exports.signup = ('api_piiquante/auth/signup', (req, res, next) => {
+exports.signup = (req, res, next) => {
     bcrypt.hash(req.body.password, 10)
         .then(hash => {
             //vérifier si l'email correspond bien à un format email
@@ -18,7 +18,7 @@ exports.signup = ('api_piiquante/auth/signup', (req, res, next) => {
             }
             else {
                 //vérifier si le mot de passe a au moins 8 caractères, une majuscule et un nombre
-                if (!passwordValidation(req.body.password)) {
+                if (!passwordValidation (req.body.password)) {
                     res.status(400).json({ message: 'Merci de saisir au moins 8 caractères, une majuscule et un nombre'});
                 }
                 else {
@@ -30,13 +30,14 @@ exports.signup = ('api_piiquante/auth/signup', (req, res, next) => {
                     });
                     user.save()
                         .then(() => res.status(201).json({ message: 'Utilisateur créé !' }))
-                        .catch(error => res.status(400).json({ error }));
+                        .catch(error => {
+                            console.log(error);
+                            res.status(400).json({ error })})
                 }}
             })
         .catch(error => res.status(500).json({ error }));
-        //console.log(this.signup)
-});
-        
+};
+
 function passwordValidation(password) {
     if (password.length >= 8 && password != password.toLowerCase() && /\d/.test(password)) {
         return true;
