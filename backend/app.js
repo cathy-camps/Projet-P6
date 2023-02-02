@@ -5,8 +5,8 @@ const helmet = require('helmet')
 const sauceRoutes = require('./routes/sauces');
 const userRoutes = require('./routes/user');
 const cors = require('cors');
-const dotenv = require('dotenv')
-dotenv.config();
+//const dotenv = require('dotenv')
+require ('dotenv').config();
 
 const app = express();
 

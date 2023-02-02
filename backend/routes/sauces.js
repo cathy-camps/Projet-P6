@@ -16,7 +16,7 @@ router.put('/:id', auth, multer, sauceCtrl.modifySauce);
 router.delete('/:id', auth, sauceCtrl.deleteSauce);
 //implémenter la route get pour récupérer la liste complète des utilisateurs enregistrés dans la base de données
 router.get('/', auth, sauceCtrl.getAllSauces);
-
 //définir l'adresse des likes et dislikes
+router.post('/:id/like', auth, sauceCtrl.likeOrDislike);
 
 module.exports = router;
