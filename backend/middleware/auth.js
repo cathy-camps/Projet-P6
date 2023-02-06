@@ -7,13 +7,13 @@ module.exports = (req, res, next) => {
         //vérifier le token et la clé secrète
         const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET');
         const userId = decodedToken.userId;
-
-        if(req.body.userId && req.body.userId !== userId) {
-           throw "Identifiant non valide !";
-        }else{
-    next()
+        req.userId = userId;
+        if (req.body.userId && req.body.userId !== userId) {
+            throw "Identifiant non valide !";
+        } else {
+            next();
         }
-    } catch {
-        res.status(401).json({error : error | 'Requête non authentifiée'});
+    } catch (error) {
+        res.status(401).json({ error: error | 'Requête non authentifiée' });
     }
-    };
+};
