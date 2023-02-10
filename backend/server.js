@@ -1,7 +1,6 @@
 const http = require('http');
 const app = require('./app');
 const dotenv = require('dotenv')
-
 dotenv.config();
 
 //fonction qui renvoit un port valide (que ce soit un numéro ou une chaine)

@@ -5,12 +5,11 @@ const helmet = require('helmet')
 const sauceRoutes = require('./routes/sauces');
 const userRoutes = require('./routes/user');
 const cors = require('cors');
-//const dotenv = require('dotenv')
+const dotenv = require('dotenv')
 require ('dotenv').config();
 
 const app = express();
 
-//console.log(process.env.MONGO_URL)
 
 mongoose.set('strictQuery', true);
 //se connecter à notre base de données MongoDB

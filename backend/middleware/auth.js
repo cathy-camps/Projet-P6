@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 
+//paramètres d'authentification 
 module.exports = (req, res, next) => {
     try {
         //récupérer les 2 éléments du tableau
