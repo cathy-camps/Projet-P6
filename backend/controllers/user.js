@@ -1,7 +1,6 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
-
 dotenv.config();
 
 const User = require('../models/User');
@@ -40,6 +39,7 @@ exports.signup = (req, res, next) => {
         .catch(error => res.status(500).json({ error }));
 };
 
+//valider les données si le password respecte les règles définies 
 function passwordValidation(password) {
     if (password.length >= 8 && password != password.toLowerCase() && /\d/.test(password)) {
         return true;

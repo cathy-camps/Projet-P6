@@ -9,7 +9,6 @@ exports.createSauce = (req, res, next) => {
     delete sauceObject._userId;
     const sauce = new Sauce({
         ...sauceObject, //copie tous les éléments de sauceObject
-        //userId: req.auth.userId,
         imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
         likes: 0,
         disLikes: 0,
@@ -19,7 +18,7 @@ exports.createSauce = (req, res, next) => {
         .catch(error => res.status(400).json({ error }));
 }
 
-//récupérer une sauce
+//Récupérer une sauce
 exports.getOneSauce = (req, res, next) => {
     Sauce.findOne({ _id: req.params.id })
         .then((sauce) => {
@@ -71,7 +70,7 @@ exports.modifySauce = (req, res, next) => {
         })
 };
 
-//supprimer une sauce 
+//Supprimer une sauce 
 exports.deleteSauce = (req, res, next) => {
     Sauce.findOne({ _id: req.params.id })
         .then(sauce => {
@@ -106,18 +105,14 @@ exports.getAllSauces = (req, res, next) => {
 
 //fonction like/dislike
 exports.likeOrDislike = (req, res, next) => {
-    //req du frontend contenant l'userId et le like
-    //récupérer l'id de la sauce passé dans l'url
+    //Requête du frontend contenant l'userId et le like, récupérer l'id de la sauce passé dans l'url
     const userId = req.body.userId;
     //récupère le corps de la requete du champ like
     const like = req.body.like;
     const sauceId = req.params.id;
     //aller chercher la sauce dans la BDD correspondant au like ou dislike, avec l'id passé en paramètre de la requete
-    //3 cas possibles : like = 1 (like), like = 0 annule le like ou dislike, like = -1 (dislike)
-    //aller chercher la sauce dans la base de données
     Sauce.findOne({ _id: sauceId })
         .then((sauce) => {
-            //res.status(200).json(sauce)
             //traitement des 3 cas possibles :
             switch (like) {
                 //l'utilisateur like la sauce 
@@ -134,8 +129,10 @@ exports.likeOrDislike = (req, res, next) => {
                 case 0:
                     if (sauce.usersLiked.includes(userId)) {
                         sauce.likes = sauce.likes - 1;
-                        const index = sauce.usersLiked.indexOf(userId); //renvoit l'userId dans le tableau correspondant
-                        sauce.usersLiked.splice(index, 1) //retirer 1 à l'index du tableau correspondant si l'utilisateur retire son like ou son dislike
+                        //renvoit l'userId dans le tableau correspondant
+                        const index = sauce.usersLiked.indexOf(userId);
+                        //retirer 1 à l'index du tableau correspondant si l'utilisateur retire son like ou son dislike
+                        sauce.usersLiked.splice(index, 1)
                     } else {
                         //l'utilisateur veut annuler son dislike
                         const index = sauce.usersDisliked.indexOf(userId);
@@ -145,7 +142,7 @@ exports.likeOrDislike = (req, res, next) => {
                     break;
             }
             delete sauce._id;
-            //mise à jour des nouvelles valeurs et renvoyer un succès ou une erreur 
+            //mise à jour des nouvelles valeurs 
             Sauce.updateOne({ _id: sauceId }, sauce)
                 .then(() => { res.status(200).json({ message: "Sauce like +1" }) })
                 .catch((error) => {
@@ -153,6 +150,7 @@ exports.likeOrDislike = (req, res, next) => {
                     res.status(500).json({ error })
                 });
         })
-        .catch((error) => { res.status(500).json({ error })
-     })
-    };
+        .catch((error) => {
+            res.status(500).json({ error })
+        })
+};
