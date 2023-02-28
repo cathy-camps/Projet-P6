@@ -5,9 +5,10 @@ const router = express.Router();
 const sauceCtrl = require('../controllers/sauce');
 const auth = require('../middleware/auth');
 const multer = require('../middleware/multer-config');
+const validateSauce = require('../middleware/validateSauce')
 
 //implémenter la route post pour créer un nouvel utilisateur en vérifiant l'authentification
-router.post('/', auth, multer, sauceCtrl.createSauce);
+router.post('/', auth, multer, sauceCtrl.validateSauce, sauceCtrl.createSauce);
 //récupération d'un utilisateur spécifique par son id (le frontend va envoyer l'id de l'utilisateur)
 router.get('/:id', auth, sauceCtrl.getOneSauce);
 //implémenter une route put pour la modification d'un utilisateur existant

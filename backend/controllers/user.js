@@ -6,17 +6,18 @@ dotenv.config();
 const User = require('../models/User');
 const app = require('../app');
 
-//crypter le mot de passe, créer un nouvel utilisateur avec ce mot de passe créé et l'adresse mail, puis enregistrer l'utilisateur dans la base de données
+//crypter et hacher le mot de passe, créer un nouvel utilisateur avec ce mot de passe créé et l'adresse mail, 
+//puis enregistre l'utilisateur dans la base de données
 exports.signup = (req, res, next) => {
     bcrypt.hash(req.body.password, 10)
         .then(hash => {
             //vérifier si l'email correspond bien à un format email
+            //vérifier si le mot de passe a au moins 8 caractères, une majuscule et un nombre
             const regex = /^[a-zA-Z0-9._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}$/;
             if (!regex.test(req.body.email)) {
                 res.status(400).json({ message: 'email invalide' });
             }
             else {
-                //vérifier si le mot de passe a au moins 8 caractères, une majuscule et un nombre
                 if (!passwordValidation(req.body.password)) {
                     res.status(400).json({ message: 'Merci de saisir au moins 8 caractères, une majuscule et un nombre' });
                 }

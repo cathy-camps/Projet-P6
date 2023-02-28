@@ -2,13 +2,24 @@ const Sauce = require("../models/Sauce");
 const jwt = require('jsonwebtoken');
 const fs = require('fs-extra')
 
+//vérifier que l'utilisateur a bien rempli tous les champs requis 
+exports.validateSauce = (req, res, next) => {
+    const sauceObject = JSON.parse(req.body.sauce);
+
+    if (!sauceObject.name || !sauceObject.description || !sauceObject.manufacturer || !sauceObject.mainPepper) {
+        return res.status(400).json({ error: 'Tous les champs doivent être remplis.' });
+    }
+
+    next();
+};
+
 //créer une nouvelle sauce
 exports.createSauce = (req, res, next) => {
     const sauceObject = JSON.parse(req.body.sauce);
     delete sauceObject._id;
     delete sauceObject._userId;
     const sauce = new Sauce({
-        ...sauceObject, //copie tous les éléments de sauceObject
+        ...sauceObject,
         imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
         likes: 0,
         disLikes: 0,
@@ -16,7 +27,7 @@ exports.createSauce = (req, res, next) => {
     sauce.save()
         .then(() => res.status(201).json({ message: 'Sauce enregistrée avec succès!' }))
         .catch(error => res.status(400).json({ error }));
-}
+};
 
 //Récupérer une sauce
 exports.getOneSauce = (req, res, next) => {
@@ -37,7 +48,6 @@ exports.modifySauce = (req, res, next) => {
         ...JSON.parse(req.body.sauce),
         imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
     } : { ...req.body };
-
     delete sauceObject._userId;
     Sauce.findOne({ _id: req.params.id })
         .then((sauce) => {
@@ -103,7 +113,6 @@ exports.getAllSauces = (req, res, next) => {
             });
 };
 
-//fonction like/dislike
 exports.likeOrDislike = (req, res, next) => {
     //Requête du frontend contenant l'userId et le like, récupérer l'id de la sauce passé dans l'url
     const userId = req.body.userId;
