@@ -122,17 +122,20 @@ exports.likeOrDislike = (req, res, next) => {
     //aller chercher la sauce dans la BDD correspondant au like ou dislike, avec l'id passé en paramètre de la requete
     Sauce.findOne({ _id: sauceId })
         .then((sauce) => {
-            //traitement des 3 cas possibles :
             switch (like) {
                 //l'utilisateur like la sauce 
                 case 1:
-                    sauce.usersLiked.push(userId);
-                    sauce.likes = sauce.likes + 1;
+                    if (!sauce.usersLiked.includes(userId)) {
+                        sauce.usersLiked.push(userId);
+                        sauce.likes = sauce.likes + 1;
+                    }
                     break;
                 //l'utilisateur dislike la sauce
                 case -1:
-                    sauce.usersDisliked.push(userId);
-                    sauce.dislikes = sauce.dislikes + 1;
+                    if (!sauce.usersDisliked.includes(userId)) {
+                        sauce.usersDisliked.push(userId);
+                        sauce.dislikes = sauce.dislikes + 1;
+                    }
                     break;
                 //l'utilisateur veut annuler son like ou son dislike
                 case 0:
@@ -142,7 +145,7 @@ exports.likeOrDislike = (req, res, next) => {
                         const index = sauce.usersLiked.indexOf(userId);
                         //retirer 1 à l'index du tableau correspondant si l'utilisateur retire son like ou son dislike
                         sauce.usersLiked.splice(index, 1)
-                    } else {
+                    } else if (sauce.usersDisliked.includes(userId)) {
                         //l'utilisateur veut annuler son dislike
                         const index = sauce.usersDisliked.indexOf(userId);
                         sauce.usersDisliked.splice(index, 1);
